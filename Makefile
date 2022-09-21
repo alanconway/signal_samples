@@ -36,6 +36,9 @@ METRICS_HOST=$(shell oc get route thanos-querier -n openshift-monitoring -o json
 metrics: # Take the 100 biggest values, getting all metrics is a lot of data.
 	$(CURL) --get --data-urlencode 'query=topk(100, {__name__=~".+"})' --data-urlencode 'limit=100' "https://$(METRICS_HOST)/api/v1/query" | $(JQ) .data.result[]
 
+traces:
+	$(CURL) https://jaeger-all-in-one-inmemory-tracing-system.apps.snoflake.my.test/api/traces?service=jaeger-query | $(JQ) .data[] > traces.json
+
 update:
 	for S in $(SIGNALS); do echo "# $$S"; $(MAKE) -s $$S > $$S.json; done
 

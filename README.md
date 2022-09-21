@@ -15,3 +15,9 @@ Formal data-model documentation (more coming as I track it down):
 
 - ViaQ log format (upstream), used by openshift logging: https://github.com/ViaQ/documentation
 
+## Tracing notes
+
+Useful links:
+- [Access the Jaeger REST API programatically in OpenShift](https://dev.to/iblancasa/access-the-jaeger-rest-api-programatically-in-openshift-ebk)
+- [Using OpenTracing and Jaeger with Your Own Services/Application – Open Sourcerers](https://www.opensourcerers.org/2022/05/30/using-opentracing-and-jaeger-with-your-own-services-application/)
+- Disabling authentication (see hack/jaeger.yaml): `spec.ingress.security: none`
