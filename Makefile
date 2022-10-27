@@ -10,11 +10,14 @@ help:
 	@echo "make <signal-type>: generate data for that type to stdout"
 	@echo "make update: generate data for all types, update files <signal-type>.json"
 	@echo "make examples: print the first value from each .json file as an example"
+	@echo
+	@echo "The commands uses the token of the current session unless the TOKEN"
+	@echo "environment variable is set (useful when using a kubeconfig file)."
 
 SIGNALS=alerts logs events metrics
 SIGNAL_FILES=$(addsuffix .json,$(SIGNALS))
 
-TOKEN=$(shell oc whoami -t)
+TOKEN?=$(shell oc whoami -t)
 CURL=curl -sS --fail-with-body -k -H "Authorization: Bearer $(TOKEN)"
 JQ=jq -M
 
@@ -22,7 +25,7 @@ JQ=jq -M
 
 
 alerts:
-	HOST=$$(oc get route alertmanager-main -n openshift-monitoring -o jsonpath='{@.spec.host}'); \
+	HOST=$$(oc get route thanos-querier -n openshift-monitoring -o jsonpath='{@.spec.host}'); \
 	$(CURL) https://$$HOST/api/v1/alerts | $(JQ) '.data[]'
 
 logs:
